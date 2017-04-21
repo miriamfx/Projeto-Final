@@ -11,10 +11,13 @@ from get import SimpleSnmp
 
 
 class SnmpToolApp(App):
-    h = 'Consultar'
+    btn1 = 'Consultar'
+    btn2 = 'Agendar'
+    btn3 = 'Gerar Rel'
+    btn4 = 'Limpar'
 
     def build(self):
-        Window.size = (1000, 250)
+        Window.size = (1000, 750)
         self.load_kv('main.kv')
 
     def set_result_form(self, resultado):

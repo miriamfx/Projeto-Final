@@ -28,15 +28,21 @@ class SimpleSnmp():
 
                       ),
         )
+        host = dbmanager.host()
         if errorIndication:
             return str(errorIndication)
         elif errorStatus:
             return str('%s at %s' % (errorStatus.prettyPrint(),
                                      errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
         else:
-            host = dbmanager.Host()
-            host.ip = str(self.ip)
-            host.comunidade = str(self.community)
+            for i in resultado:
+                for value in varBinds:
+                    if name == 'sysContact':
+                        host.contact = str(value)
+
+
+
+
 
             return str(resultado)
 

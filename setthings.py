@@ -12,7 +12,7 @@ DEFAULT_FIELD = 'sysName'
 SNMP_VERSION = 'SNMPv2-MIB'
 
 # Caminho do banco de dados.
-DB = os.path.abspath(os.path.dirname('snmpdb.db'))
+DB = os.path.abspath(os.path.dirname('database/snmpdb.db'))
 
 # Caminho do diretorio de logs local.
 LOG_FOLDER = os.path.join(os.getcwd(), '/logs')

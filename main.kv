@@ -1,7 +1,7 @@
 <Button>:
     color: 1, 1, 1, 1
-    font_size: 17
-    size_hint: .2, .1
+    font_size: 12
+    size_hint: .1, .1
 
 FloatLayout:
     orientation: 'horizontal'
@@ -11,44 +11,90 @@ FloatLayout:
         Rectangle:
             pos: self.pos
             size: self.size
+
+    Image:
+        source:'500.png'
+        size_hint_x: 1
+        size_hint_y: .2
+        pos_hint: {'x': .10, 'top': .95}
     Label:
-        text: "IP : "
+        text: "IP  "
         font_size: 18
         color: 1, 1, 1, 1
-        pos_hint: {'x': .27, 'top': .97}
-        size_hint: .2, .1
+        pos_hint: {'x': .20, 'top': .75}
+        size_hint: .1, .1
+
     TextInput:
         id: textinput_ip
         text: ''
-        pos_hint: {'x': .4, 'top': .97}
+        pos_hint: {'x': .29, 'top': .75}
         font_size: 12
-        size_hint: .4, .1
+        size_hint: .2, .1
     Label:
-        text: "Community : "
+        text: "Communidade  "
         font_size: 18
         color: 1, 1, 1, 1
-        pos_hint: {'x': .18, 'top': .85}
-        size_hint: .2, .1
+        pos_hint: {'x': .15, 'top': .65}
+        size_hint: .1, .1
     TextInput:
         id: textinput_community
         text: ''
-        pos_hint: {'x': .4, 'top': .85}
+        pos_hint: {'x': .29, 'top': .65}
         font_size: 12
-        size_hint: .4, .1
-	Button:
-        text: app.h
-        pos_hint: {'x': .4, 'top': .73}
-        on_press:app.get_values_form(textinput_ip.text, textinput_community.text)
-        id: btn_start
+        size_hint: .2, .1
     Label:
-        text: "Resultado : "
+        text: "Get/sec  "
+        font_size: 18
+        color: 1, 1, 1, 1
+        pos_hint: {'x': .53, 'top': .75}
+        size_hint: .1, .1
+    Label:
+        text: "Dur/sec"
+        font_size: 18
+        color: 1, 1, 1, 1
+        pos_hint: {'x': .53, 'top': .65}
+        size_hint: .1, .1
+    TextInput:
+        id: textinput_time1
+        text: ''
+        pos_hint: {'x': .63, 'top': .75}
+        font_size: 12
+        size_hint: .1, .1
+    TextInput:
+        id: textinput_time2
+        text: ''
+        pos_hint: {'x': .63, 'top': .65}
+        font_size: 12
+        size_hint: .1, .1
+	Button:
+        text: app.btn1
+        pos_hint: {'x': .3, 'top': .53}
+        on_press:app.get_values_form(textinput_ip.text, textinput_community.text)
+        id: btn_consultar
+    Button:
+        text: app.btn2
+        pos_hint: {'x': .4, 'top': .53}
+        on_press:app.get_values_form(textinput_ip.text, textinput_community.text)
+        id: btn_agendar
+    Button:
+        text: app.btn3
+        pos_hint: {'x': .5, 'top': .53}
+        on_press:app.get_values_form(textinput_ip.text, textinput_community.text)
+        id: btn_gerar_rel
+    Button:
+        text: app.btn4
+        pos_hint: {'x': .6, 'top': .53}
+        on_press:app.get_values_form(textinput_ip.text, textinput_community.text)
+        id: btn_limpar
+    Label:
+        text: "Resultado"
         font_size: 18
         color: 1,1,1,1
-        pos_hint: {'x': .18, 'top': .65}
+        pos_hint: {'x': .10, 'top': .44}
         size_hint: .2, .1
     TextInput:
         id: textinput_resultado
         text: ''
-        pos_hint: {'x': .18, 'top': .53}
+        pos_hint: {'x': .18, 'top': .35}
         font_size: 12
-        size_hint: .65, .45
+        size_hint: .65, .30

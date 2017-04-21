@@ -13,7 +13,8 @@ engine = create_engine('sqlite:///snmpdb.db')
 base = declarative_base()
 
 
-class Host(base):
+
+class host(base):
     __tablename__ = 'hosts'
     ip = Column(String(15), primary_key=True)
     comunidade = Column(String(8))
@@ -34,12 +35,15 @@ class Host(base):
         session.add(self)
         session.commit()
 
-
-    def create_db(self):
-        base.metadata.create_all(engine)
-
-
-
     def gera_rel(self):
 
-      pass
+        
+        with open('output_file.csv', 'wb') as fout:
+            writer = csv.writer(fout)
+            writer.writerow([i[0] for i in cursor.description])  # heading row
+            writer.writerows(cursor.fetchall())
+
+
+base.metadata.create_all(engine)
+
+
