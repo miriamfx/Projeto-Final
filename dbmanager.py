@@ -4,13 +4,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import delete, select
 import csv
-import setthings
 import subprocess
 import get
 import os.path
-
-
-
 
 
 base = declarative_base()
@@ -39,18 +35,20 @@ class host(base):
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
         session.add(self)
-        resultado = get.SimpleSnmp.resultado
+
 
         session.commit()
 
     def rel_hosts(self):
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
-        return session.query(host).order_by(host.ip)
+
         snmp_db = host
         with open(r'snmp.csv', 'a') as data:
             writer = csv.writer(data)
             writer.writerow(snmp_db)
+
+        return session.query(host).order_by(host.ip)
 
     def drop(self):
         host.metadata.drop_all(engine)

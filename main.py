@@ -10,9 +10,8 @@ from kivy.uix.popup import Popup
 from get import SimpleSnmp
 import dbmanager
 import time
+
 from threading import Thread, Timer
-
-
 
 class SnmpToolApp(App):
     btn1 = 'Consultar'
@@ -24,21 +23,33 @@ class SnmpToolApp(App):
 
 
     def gerar_rel(self):
-        dbmanager.gera_rel()
+        dbmanager.host.rel_hosts(self)
 
     def clean(self):
-        dbmanager.drop()
 
-    def agendar(self, ip, community, time1, time2):
-        Thread.__init__(self)
-        self.stopped = time1
+        dbmanager.host.drop(self)
 
-        while not self.stopped.wait(time2):
+    def get_agendado(self, ip, community,time1, time2):
+        tempo_cont = int(time2)
+        tempo_final = int(time1)
+        time.sleep(tempo_cont)
+        tempo = 0
 
-            a = SimpleSnmp(ip, community)
-            result = a.GetSNMP()
-            result = result + '\n IP ' + ip
-            result = result + ' e Community ' + community
+
+        if tempo < tempo_final:
+            tempo = time.time()
+
+            while tempo < tempo_final:
+                a = self.get_values_form(ip, community)
+                print(tempo)
+                result = ' community ' + community
+                Thread(target= self.get_agendado, kwargs={'self': self,
+                                                              'ip': ip,
+                                                              'community': community,
+                                                              'time2': time2
+                                                              }).start()
+
+
 
 
     def build(self):
