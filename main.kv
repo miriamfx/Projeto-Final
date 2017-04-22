@@ -74,17 +74,17 @@ FloatLayout:
     Button:
         text: app.btn2
         pos_hint: {'x': .4, 'top': .53}
-        on_press:app.get_values_form(textinput_ip.text, textinput_community.text)
+        on_press:app.agendar(textinput_ip.text, textinput_community.text, textinput_time1.text, textinput_time2.text)
         id: btn_agendar
     Button:
         text: app.btn3
         pos_hint: {'x': .5, 'top': .53}
-        on_press:app.get_values_form(textinput_ip.text, textinput_community.text)
+        on_press:app.gerar_rel('')
         id: btn_gerar_rel
     Button:
         text: app.btn4
         pos_hint: {'x': .6, 'top': .53}
-        on_press:app.get_values_form(textinput_ip.text, textinput_community.text)
+        on_press:app.clean( )
         id: btn_limpar
     Label:
         text: "Resultado"

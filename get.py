@@ -2,7 +2,8 @@ from pysnmp.hlapi import *
 from kivy.properties import ObjectProperty
 from os import *
 import dbmanager
-
+import os.path
+import os
 
 
 class SimpleSnmp():
@@ -35,20 +36,17 @@ class SimpleSnmp():
             return str('%s at %s' % (errorStatus.prettyPrint(),
                                      errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
         else:
-            for i in resultado:
-                for value in varBinds:
-                    if name == 'sysContact':
-                        host.contact = str(value)
-
-
-
+            if not os._exists('snmpdb.db'):
+                db = dbmanager.host
+            else:
+                host.ip = self.ip
+                host.comunidade = self.community
+                for i in resultado:
+                    host.contact = str(resultado[0])
+                    host.desc = str(resultado[1])
+                    host.idObject = str(resultado[2])
+                    host.location = str(resultado[3])
+                host.save()
 
 
             return str(resultado)
-
-
-
-
-
-
-
