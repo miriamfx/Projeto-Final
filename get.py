@@ -7,12 +7,12 @@ import os
 
 
 class SimpleSnmp():
-    def __init__(self, ip, community):
+    def __init__(self, ip, community):#recebe os atributos de entrada do main
         self.ip = ip
         self.community = community
 
 
-    def GetSNMP(self):
+    def GetSNMP(self): #realiza o get snmp
         resultado = errorIndication, errorStatus, errorIndex, varBinds = next(
             getCmd(SnmpEngine(),
                    CommunityData(self.community),
@@ -27,18 +27,15 @@ class SimpleSnmp():
                        ObjectType(ObjectIdentity('IP-MIB', 'ipInDelivers', 0)),
                        ObjectType(ObjectIdentity('IP-MIB', 'ipOutRequests', 0)),
 
-
-
-
                       ),
         )
-        host = dbmanager.host()
+        host = dbmanager.host() #instancia a variavel da tabela do db
         if errorIndication:
             return str(errorIndication)
         elif errorStatus:
             return str('%s at %s' % (errorStatus.prettyPrint(),
                                      errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
-        else:
+        else: #salva a requisição no banco de dados
             host.ip = self.ip
             host.comunidade = self.community
             host.contact = str(resultado[0])
