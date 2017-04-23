@@ -24,6 +24,11 @@ class SimpleSnmp():
                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysObjectID', 0)),
                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysLocation', 0)),
                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysUpTime', 0)),
+                       ObjectType(ObjectIdentity('IP-MIB', 'ipInDelivers', 0)),
+                       ObjectType(ObjectIdentity('IP-MIB', 'ipOutRequests', 0)),
+
+
+
 
                       ),
         )

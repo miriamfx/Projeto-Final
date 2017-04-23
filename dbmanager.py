@@ -1,13 +1,14 @@
 from sqlalchemy import create_engine, Table, Column, MetaData,engine
 from sqlalchemy import Table, Column, Integer, String, ForeignKey, MetaData
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.serializer import loads, dumps
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import delete, select
 import csv
 import subprocess
 import get
 import os.path
-from sqlalchemy.engine import reflection
+
 
 
 base = declarative_base()
@@ -42,8 +43,13 @@ class host(base):
     def rel_hosts(self):
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
-        return session.query(host).order_by(host.ip)
 
+        f = ('id', 'ip', 'comunidade', 'contato', 'desc', 'uptime', 'idObject')
+        with open('mycsvfile.csv', 'wb') as csv_file:  # Just use 'w' mode in 3.x
+            w = csv.DictWriter(csv_file,fieldnames=f)
+            for user in session.query():
+
+                w.writerow(dict(id))
 
     def drop(self):
         host.metadata.drop_all(engine)
