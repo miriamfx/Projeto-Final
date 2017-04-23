@@ -12,7 +12,6 @@ class SimpleSnmp():
         self.community = community
 
 
-
     def GetSNMP(self):
         resultado = errorIndication, errorStatus, errorIndex, varBinds = next(
             getCmd(SnmpEngine(),
@@ -25,7 +24,6 @@ class SimpleSnmp():
                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysObjectID', 0)),
                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysLocation', 0)),
                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysUpTime', 0)),
-
 
                       ),
         )
@@ -44,5 +42,4 @@ class SimpleSnmp():
             host.location = str(resultado[3])
 
             host.save()
-
         return str(resultado)

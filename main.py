@@ -1,4 +1,3 @@
-import kivy
 from kivy.app import App
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.floatlayout import FloatLayout
@@ -10,6 +9,9 @@ from kivy.uix.popup import Popup
 from get import SimpleSnmp
 import dbmanager
 import time
+import re
+import sys
+from threading import Thread
 
 from threading import Thread, Timer
 
@@ -24,31 +26,39 @@ class SnmpToolApp(App):
 
     def gerar_rel(self):
         dbmanager.host.rel_hosts(self)
+        result = 'Relatório gerado com sucesso.'
+        self.set_result_form(result)
 
     def clean(self):
 
         dbmanager.host.drop(self)
+        result = 'Drop table realizado com sucesso.'
+        self.set_result_form(result)
+
+
 
     def get_agendado(self, ip, community,time1, time2):
-        tempo_cont = int(time2)
-        tempo_final = int(time1)
-        time.sleep(tempo_cont)
+        Thread.__init__(self)
+        tempo_cont = (time2)
+        tempo_final = (time1)
+
         tempo = 0
 
+        while tempo < tempo_final:
+            cont = time.time()
+            tempo = cont+tempo
+            time.sleep(tempo_cont)
 
-        if tempo < tempo_final:
-            tempo = time.time()
+            self.get_values_form(ip, community)
 
-            while tempo < tempo_final:
-                a = self.get_values_form(ip, community)
-                print(tempo)
-                result = ' community ' + community
-                Thread(target= self.get_agendado, kwargs={'self': self,
+
+            Thread(target= self.get_agendado, kwargs={'self': self,
                                                               'ip': ip,
                                                               'community': community,
                                                               'time2': time2
                                                               }).start()
 
+        self.set_result_form(self.result)
 
 
 

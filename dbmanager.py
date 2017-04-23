@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Table, Column, MetaData
+from sqlalchemy import create_engine, Table, Column, MetaData,engine
 from sqlalchemy import Table, Column, Integer, String, ForeignKey, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -7,6 +7,7 @@ import csv
 import subprocess
 import get
 import os.path
+from sqlalchemy.engine import reflection
 
 
 base = declarative_base()
@@ -17,7 +18,8 @@ base.metadata.bind = engine
 class host(base):
 
     __tablename__ = 'hosts'
-    ip = Column(String(15), primary_key=True)
+    id = Column(Integer,primary_key=True)
+    ip = Column(String(15))
     comunidade = Column(String(8))
     contact = Column(String)
     desc = Column(String)
@@ -35,23 +37,17 @@ class host(base):
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
         session.add(self)
-
-
         session.commit()
 
     def rel_hosts(self):
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
-
-        snmp_db = host
-        with open(r'snmp.csv', 'a') as data:
-            writer = csv.writer(data)
-            writer.writerow(snmp_db)
-
         return session.query(host).order_by(host.ip)
+
 
     def drop(self):
         host.metadata.drop_all(engine)
+        base.metadata.create_all(engine)
 
 
 base.metadata.create_all(engine)
