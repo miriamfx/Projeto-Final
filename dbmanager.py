@@ -25,11 +25,10 @@ class host(base):
     uptime = Column(String)
     idObject = Column(String(100))
     location = Column(String(100))
+    ipInDelivers = Column(String)
+    ipOutRequests = Column(String)
     data = Column(String)
-    hora = Column(String)
-    qtd_mem = Column(String)
-    qtd_mem_proc = Column(String)
-    ip_Errors = Column(String)
+
 
     def save(self):
         DBSession = sessionmaker(bind=engine)
@@ -42,12 +41,15 @@ class host(base):
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
 
-        f = ('id', 'ip', 'comunidade', 'contato', 'desc', 'uptime', 'idObject')
-        with open('mycsvfile.csv', 'wb') as csv_file:
-            w = csv.DictWriter(csv_file,fieldnames=f)
-            for user in session.query():
 
-                w.writerow(f)
+        with open('snmp_rel.csv', 'w') as csvfile:
+            f = ['id', 'ip', 'comunidade', 'contato', 'desc', 'uptime', 'idObject', 'location', 'ipInDelivers',
+                 'ipInDelivers', 'data']
+
+            writer = csv.DictWriter(csvfile, fieldnames=f)
+
+            writer.writeheader()
+            writer.writerow({f})
 
     #Exclui toda a tabela (executado pelo botão Limpar)
     def drop(self):

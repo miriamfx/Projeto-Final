@@ -85,6 +85,7 @@ class SnmpToolApp(App):
 
     def set_result_form(self, resultado): #responsável por mostrar as mensagens na tela
         self.root.ids.textinput_resultado.text = resultado
+
         print (resultado)
 
 

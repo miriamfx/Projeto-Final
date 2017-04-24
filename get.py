@@ -4,6 +4,7 @@ from os import *
 import dbmanager
 import os.path
 import os
+from datetime import datetime
 
 
 class SimpleSnmp():
@@ -13,35 +14,60 @@ class SimpleSnmp():
 
 
     def GetSNMP(self): #realiza o get snmp
-        resultado = errorIndication, errorStatus, errorIndex, varBinds = next(
-            getCmd(SnmpEngine(),
-                   CommunityData(self.community),
-                   UdpTransportTarget((self.ip, 161)),
-                   ContextData(),
+        data = (
+            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysLocation', 0)),
+            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)),
+            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysObjectID', 0)),
+            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysLocation', 0)),
+            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysUpTime', 0)),
+            ObjectType(ObjectIdentity('IP-MIB', 'ipInDelivers', 0)),
+            ObjectType(ObjectIdentity('IP-MIB', 'ipOutRequests', 0))
 
-                       ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysContact', 0)),
-                       ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)),
-                       ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysObjectID', 0)),
-                       ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysLocation', 0)),
-                       ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysUpTime', 0)),
-                       ObjectType(ObjectIdentity('IP-MIB', 'ipInDelivers', 0)),
-                       ObjectType(ObjectIdentity('IP-MIB', 'ipOutRequests', 0)),
-
-                      ),
         )
-        host = dbmanager.host() #instancia a variavel da tabela do db
-        if errorIndication:
-            return str(errorIndication)
-        elif errorStatus:
-            return str('%s at %s' % (errorStatus.prettyPrint(),
-                                     errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
-        else: #salva a requisição no banco de dados
-            host.ip = self.ip
-            host.comunidade = self.community
-            host.contact = str(resultado[0])
-            host.desc = str(resultado[1])
-            host.idObject = str(resultado[2])
-            host.location = str(resultado[3])
 
-            host.save()
-        return str(resultado)
+        g = getCmd(SnmpEngine()
+                   , CommunityData(self.community, mpModel=0)
+                   , UdpTransportTarget((self.ip, 161))
+                   , ContextData()
+                   , *data)
+
+        errorIndication, errorStatus, errorIndex, varBinds = next(g)
+
+        if errorIndication:
+            print(errorIndication)
+        elif errorStatus:
+            print('%s at %s' % (
+                errorStatus.prettyPrint(),
+                errorIndex and varBinds[int(errorIndex) - 1][0] or '?'
+            )
+
+                  )
+        else:
+            lista = []
+            cont = 0
+            for varBind in varBinds:
+                if cont < 8:
+                    lista.append((' = '.join([x.prettyPrint() for x in varBind])))
+                    cont = cont + 1
+
+
+
+        host = dbmanager.host()
+        #salva a requisição no banco de dados
+        host.ip = self.ip
+        host.comunidade = self.community
+        host.contact = str(lista[0])
+        host.desc = str(lista[1])
+        host.idObject = str(lista[2])
+        host.location = str(lista[3])
+        host.uptime = str(lista[4])
+        host.location = str(lista[5])
+        host.ipInDelivers = str(lista[6])
+        host.ipOutRequests = str(lista[-1])
+        host.data = str(datetime.now)
+
+
+
+        host.save()
+
+        return str(lista)
