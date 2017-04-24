@@ -47,15 +47,11 @@ class host(base):
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
 
-        f = ['id', 'ip', 'comunidade', 'contato', 'desc', 'uptime', 'idObject', 'location', 'ipInDelivers', 'ipInDelivers', 'data']
-        with open('snmp_rel.csv', 'wb') as csv_file:
-            # w = csv.writer()
-            for row in session.query(host).order_by('ip'):
-                linha = ','.join([
-                    row.id, row.ip, row.comunidade, row.contact, row.desc, row.uptime,
-                    row.idObject, row.location, row.ipInDelivers, row.ipInDelivers, row.data
-                ])
-                csv_file.write.writerow(linha)
+        with open('snmp_rel.csv') as fh:
+            filednames = ('id', 'ip', 'comunidade', 'contato', 'desc', 'uptime', 'idObject', 'location', 'ipInDelivers', 'ipInDelivers', 'data')
+            writer = csv.DictWriter(fh, fieldnames= filednames)
+            for id in host.query.all():
+                writer.writerow(dict(id))
 
     #Exclui toda a tabela (executado pelo botão Limpar)
     def drop(self):

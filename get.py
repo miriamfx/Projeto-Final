@@ -73,6 +73,8 @@ class SimpleSnmp():
         host.data = str(datetime.now)
 
         host.save()
+      
+
 
 
 
