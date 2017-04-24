@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+#coding: utf-8
+
+# @autor: Míriam Félix Lemes da Silva
+# @contato: miriamfx2@gmail.com
+# @data: 08 de Abril de 2017
 from sqlalchemy import create_engine, Table, Column, MetaData,engine
 from sqlalchemy import Table, Column, Integer, String, ForeignKey, MetaData
 from sqlalchemy.ext.declarative import declarative_base
@@ -41,21 +47,20 @@ class host(base):
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
 
-
-        with open('snmp_rel.csv', 'w') as csvfile:
-            f = ['id', 'ip', 'comunidade', 'contato', 'desc', 'uptime', 'idObject', 'location', 'ipInDelivers',
-                 'ipInDelivers', 'data']
-
-            writer = csv.DictWriter(csvfile, fieldnames=f)
-
-            writer.writeheader()
-            writer.writerow({f})
+        f = ['id', 'ip', 'comunidade', 'contato', 'desc', 'uptime', 'idObject', 'location', 'ipInDelivers', 'ipInDelivers', 'data']
+        with open('snmp_rel.csv', 'wb') as csv_file:
+            # w = csv.writer()
+            for row in session.query(host).order_by('ip'):
+                linha = ','.join([
+                    row.id, row.ip, row.comunidade, row.contact, row.desc, row.uptime,
+                    row.idObject, row.location, row.ipInDelivers, row.ipInDelivers, row.data
+                ])
+                csv_file.write.writerow(linha)
 
     #Exclui toda a tabela (executado pelo botão Limpar)
     def drop(self):
         host.metadata.drop_all(engine) #drop da tabela
         base.metadata.create_all(engine) #cria a tabela vazia
-
 
 base.metadata.create_all(engine)
 

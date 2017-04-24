@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+#coding: utf-8
+
+# @autor: Míriam Félix Lemes da Silva
+# @contato: miriamfx2@gmail.com
+# @data: 08 de Abril de 2017
+
 from pysnmp.hlapi import *
 from kivy.properties import ObjectProperty
 from os import *
@@ -5,7 +12,6 @@ import dbmanager
 import os.path
 import os
 from datetime import datetime
-
 
 class SimpleSnmp():
     def __init__(self, ip, community):#recebe os atributos de entrada do main
@@ -66,8 +72,8 @@ class SimpleSnmp():
         host.ipOutRequests = str(lista[-1])
         host.data = str(datetime.now)
 
-
-
         host.save()
+
+
 
         return str(lista)
