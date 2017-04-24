@@ -43,15 +43,27 @@ class host(base):
         session.commit()
 
     #realiza um dump na tabela do banco de dados e salva no arquivo csv (executado pelo botão gera rel)
+    def to_dict(self):
+        _t = {
+            'id': self.id, 'ip': self.ip, 'comunidade': self.comunidade, 'contact': self.contact,
+            'desc': self.desc, 'uptime': self.uptime, 'idObject': self.idObject, 'location': self.location,
+            'ipInDelivers': self.ipInDelivers, 'ipOutRequests': self.ipOutRequests,
+            'data': self.data,
+        }
+        return _t
     def rel_hosts(self):
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
 
-        with open('snmp_rel.csv') as fh:
-            filednames = ('id', 'ip', 'comunidade', 'contato', 'desc', 'uptime', 'idObject', 'location', 'ipInDelivers', 'ipInDelivers', 'data')
-            writer = csv.DictWriter(fh, fieldnames= filednames)
-            for id in host.query.all():
-                writer.writerow(dict(id))
+        with open('snmp_rel.csv', 'w') as csv_file:  # Just use 'w' mode in 3.x
+            fieldnames = [
+                'id', 'ip', 'comunidade', 'contact', 'desc', 'uptime', 'idObject', 'location',
+                'ipInDelivers','ipOutRequests','data'
+            ]
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+            #writer.writeheader()
+            for row in session.query(host).order_by('id'):
+                writer.writerow(row.to_dict())
 
     #Exclui toda a tabela (executado pelo botão Limpar)
     def drop(self):

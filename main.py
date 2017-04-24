@@ -70,7 +70,7 @@ class SnmpToolApp(App):
         logAgendGet(self)
 
     def build(self):#responsável pela montagem do layout
-        Window.size = (1000, 750) #tamanho da janela
+        Window.size = (750, 750) #tamanho da janela
         self.load_kv('main.kv') #caminho do arquivo main.kv onde estão as configurações de botão etc.
 
     def set_result_form(self, resultado): #responsável por mostrar as mensagens na tela

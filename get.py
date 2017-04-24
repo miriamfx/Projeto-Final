@@ -24,7 +24,6 @@ class SimpleSnmp():
             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysLocation', 0)),
             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0)),
             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysObjectID', 0)),
-            ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysLocation', 0)),
             ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysUpTime', 0)),
             ObjectType(ObjectIdentity('IP-MIB', 'ipInDelivers', 0)),
             ObjectType(ObjectIdentity('IP-MIB', 'ipOutRequests', 0))
@@ -52,10 +51,9 @@ class SimpleSnmp():
             lista = []
             cont = 0
             for varBind in varBinds:
-                if cont < 8:
+                if cont < 7:
                     lista.append((' = '.join([x.prettyPrint() for x in varBind])))
                     cont = cont + 1
-
 
 
         host = dbmanager.host()
@@ -67,15 +65,10 @@ class SimpleSnmp():
         host.idObject = str(lista[2])
         host.location = str(lista[3])
         host.uptime = str(lista[4])
-        host.location = str(lista[5])
-        host.ipInDelivers = str(lista[6])
+        host.ipInDelivers = str(lista[5])
         host.ipOutRequests = str(lista[-1])
         host.data = str(datetime.now)
 
         host.save()
-      
-
-
-
 
         return str(lista)
