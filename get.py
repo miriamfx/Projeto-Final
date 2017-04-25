@@ -31,7 +31,7 @@ class SimpleSnmp():
         )
 
         g = getCmd(SnmpEngine()
-                   , CommunityData(self.community, mpModel=0)
+                   , CommunityData(self.community, mpModel=1)
                    , UdpTransportTarget((self.ip, 161))
                    , ContextData()
                    , *data)
