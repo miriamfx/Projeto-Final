@@ -140,8 +140,7 @@ MODULOS DO PROGRAMA
 > logs.py
 	  Grava em arquivos de logs as operacoes dos programas.
 
-> settings.py
-	  Arquivo de configuracao
+
 	  
 	  
 	  
