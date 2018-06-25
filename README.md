@@ -39,62 +39,33 @@ CONFIGURAÇÕES NECESSÁRIAS NO AGENTE
 MODULOS DO PROGRAMA
 >main.py
 
-     >SnmpToolApp: responsavel pelos botões de ação, encaminha os atributos de entrada para o manager
-    btn1 = cadastro
-    btn2 = consulta (get)
-    btn3 = agendar
-    btn4 = gerar relatorio
-    btn5 = limpar
-    btn6 = sair
+     >SnmpToolApp: responsavel pelos botões de ação, encaminha os atributos de entrada
+     	 esse modulo é o responsavel por delegar as funções aos outros modulos
+	  ele recebe os atributos de entrada  que são as chaves para executar os demais modulos e gerencia qual modulo deve
+	  ser executado.
+	  para isso existem funções dentro de uma classe gerente, que executam com um repetidor while, e são executados a partir da condição
+   
+    btn1 = consulta (get)
+    btn2 = agendar
+    btn3 = gerar relatorio
+    btn4 = limpar
+
 
     >ponto de entrada
         ip
         comunidade
         tempo
 
-    se entrada recebe 1 = btn1, 2 = btn2, 3 = btn3, 4 = btn4, 5 = btn5, 6 = btn6
+    se entrada recebe 1 = btn1, 2 = btn2, 3 = btn3, 4 = btn4
 
 >main.kv
       formata a parte grafica, funciona como uma pagina de estilos.
 
-> manager.py
-	  esse modulo é o responsavel por delegar as funções aos outros modulos
-	  ele recebe os atributos de entrada do main.py que são as chaves para executar os demais modulos e gerencia qual modulo deve
-	  ser executado.
-	  para isso existem funções dentro de uma classe gerente, que executam com um repetidor while, e são executados a partir da condição
-
 
 > get.py
 	  Programa que recolhe as informacoes dos hosts.
-	  Para chamar diretamente, deve ser passado por parametro o IP e a COMUNIDADE. Para obter estas informacoes, executar o >dbquery.py
-
- > GetSNMP1: recebe informações da MIB system
-    1.3.6.1.2.1.1.1 - sysDescr
-    1.3.6.1.2.1.1.2 - sysObjectID
-    1.3.6.1.2.1.1.3 - sysUpTime
-    1.3.6.1.2.1.1.4 - sysContact
-    1.3.6.1.2.1.1.6 - sysLocation
-
- >GetSNMP2: recebe informaçoes da MIB HOST-RESOURCES-MIB
-    1.3.6.1.2.1.25.5.1.1.1 - hrSWRunPerfCPU
-    "O número de centésimos-segundos da CPU do sistema total
-    Recursos consumidos por este processo. Note que em um
-    Sistema multi-processador, este valor pode
-    Mais de um centi-segundo em um centi-segundo de real
-    (Relógio de parede).
-
-    1.3.6.1.2.1.25.5.1.1.2 - hrSWRunPerfMem'
-    A quantidade total de memória do sistema real alocada para este processo.
-
- >GetSNMP3:
-
-
-     1.3.6.1.2.1.4.4 -  ipInHdrErrors
-     O número de datagramas de entrada descartados devido a
-     Erros em seus cabeçalhos IP, incluindo
-     Checksums, número de versão incompatível, outro formato
-     Erros, tempo de vida excedido, erros descobertos
-     No processamento de suas opções de IP, etc.
+	  Para chamar diretamente, deve ser passado por parametro o IP e a COMUNIDADE. Para obter estas informacoes, executar o 
+ 
 
 
 > dbmanager.py
