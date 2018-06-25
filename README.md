@@ -134,8 +134,6 @@ MODULOS DO PROGRAMA
         uma lista com uma tupla apenas.
 
 
-> dbquery.py
-	  Gera os relatorios das informacoes do banco de dados. Existem duas saidas: TXT e CSV.
 
 > logs.py
 	  Grava em arquivos de logs as operacoes dos programas.
