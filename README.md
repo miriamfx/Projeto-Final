@@ -9,34 +9,31 @@ RESUMO
 
 	O programa utiliza o protocolo SNMP para pegar informacoes em determinado intervalo de tempos de Hosts na rede.
 	Estas informacoes sao armazenadas em um banco de dados utilizando sqlite.
+	Baseado no protocolo SNMP, foi desenvolvida uma aplicação capaz de enviar uma mensagem “GET” a um determinado dispositivo, 		recebendo como parâmetro o IP e a comunidade do objeto da rede a ser gerenciado e retornando os valores na sequência em que 		serão solicitados. Para tanto, serão utilizadas a linguagem de programação Python e suas bibliotecas Pysnmp e Kivy.
 
-CONFIGURAÇÃO NECESSÁRIA
-> Gerenciador
-	Para gerenciar o programa e o banco de dados e necessario utilizar o Linux e seguir os seguintes passos para instalacao.
-	1. Configurar o INTALL_PATH no arquivo settings.py
-	2. Instalar o Python (pyenv install 3.5.1)
-	3. Instalar o pysnmp (pip install pysnmp)
-	4. Instalar o snmpd (no Ubuntu: apt-get install snmpd)
+REQUISITOS 
+
+	A aplicação  desenvolvida utilizando o sistema operacional Ubuntu 16.04.1, a maioria das distribuições linux já vem com Python  instalado, mas a versão nem sempre é atualizada, para instalar a versão mais atualizada do Python foi utilizado o pyenv. Para que nossa aplicação também utilizamos a biblioteca PySNMP que facilitou muito o desenvolvimento da aplicação. Necessário também ter ativo tanto no gerente quanto no agende o serviço SNMP.
+
+CONFIGURAÇÕES NECESSÁRIAS NO AGENTE
+
+	O SNMP deve estar ativo no agente. Após ativado o serviço SNMP configure a comunidade em que irá executar o gerente. Para configurar  o agente no Windows deve-se ir em serviços, e ativar o serviço SNMP, em seguida em propriedades do serviço configurar a comunidade em que o agente esta, para podermos realizar a leitura. Lembrando que o gerente não precisa estar na mesma comunidade, e pode gerenciar comunidades distintas ao mesmo tempo, mas precisa receber o dados da comunidade como parâmetro para execução e envio das mensagens. 
 
 
-> Cliente Linux
-	1. Instalar o snmpd
-	2. Copiar o arquivo de configuracao snmpd.conf pre configurado do diretorio padrao do Gerenciador para o cliente.
-	3. Reiniciar o snmpd
+	A configuração no agente Linux, foi realizado no Ubuntu, a ativação do SNMP no Linux vale tanto para o agente como para o gerente, se o serviço não estiver ativo no servidor não realizará o envio das mensagens. No Linux instale o serviço SNMP através do comando, # apt-get install snmpd, apague o conteúdo do arquivo de configuração do serviço através do comando, # echo > /etc/snmp/snmpd.conf, edite o arquivo de configuração snmpd.conf utilizando o vi, # vi /etc/snmp/snmpd.conf.
+	Segue abaixo um arquivo "snmpd.conf" totalmente funcional: 
+	rocommunity rede123
+	syslocation projeto_final
+	sysContact projeto_final <projeto.final@gmail.com>
+	Em nosso exemplo, foi utilizado o nome de comunidade rede123, a localização projeto_final e a pessoa de contato projeto_final.
+	Reinicie o serviço SNMP através do comando abaixo: 
+	# /etc/init.d/snmpd restart
+	Instale e execute o utilitário rcconf, marque para que o serviço SNMP seja iniciado automaticamente durante o boot: 
+	# apt-get install rcconf
+	# rcconf
+	O serviço SNMP foi instalado em seu sistema com sucesso.
 
-> Cliente Windows 7
-	1. Iniciar
-	2. Painel de Controle
-	3. Programas
-	4. Ativar ou desativar recursos do Windows
-	5. Marcar Protocolo SNMP
-	6. Clicar Ok.
-	7. Acessar o gerenciador de servicos (services.msc)
-	8. Abrir o servico Servico SNMP
-	9. Na guia Agente, adicionar informacoes de contato e local e selecionar todos os servicos
-	10. Na guia Intercalacoes, inserir a comunidade public
-	11. Na guia Seguranca, adicionar em Nome de comunidades aceitas a comunidade public (somente leitura)
-	12. Na guia Seguranca, definir se ira aceita pacotes SNMP de qualquer host ou definir o IP do host gerenciador
+
 
 
 MODULOS DO PROGRAMA
@@ -69,7 +66,7 @@ MODULOS DO PROGRAMA
 
 > get.py
 	  Programa que recolhe as informacoes dos hosts.
-	  Para chamar diretamente, deve ser passado por parametro o IP e a COMUNIDADE. Para obter estas informacoes, executar o dbquery.py
+	  Para chamar diretamente, deve ser passado por parametro o IP e a COMUNIDADE. Para obter estas informacoes, executar o >dbquery.py
 
  > GetSNMP1: recebe informações da MIB system
     1.3.6.1.2.1.1.1 - sysDescr
@@ -123,7 +120,7 @@ MODULOS DO PROGRAMA
       def drop_tables_db(db):
         Exclui as tabelas do Banco de Dados.
         O Banco de Dados utilizando e o definido no settings.py.
-
+	
       def reg_hosts_db(db, hosts_list):
         Insere informacoes no Banco de Dados na tabela Hosts.
         O Banco de Dados utilizando e o definido no settings.py.
@@ -145,3 +142,6 @@ MODULOS DO PROGRAMA
 
 > settings.py
 	  Arquivo de configuracao
+	  
+	  
+	  
